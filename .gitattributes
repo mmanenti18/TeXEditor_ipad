@@ -1,2 +1,8 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# The TeX bundle parts are binary: never convert line endings in them
+texlive.bin.* binary
+*.wasm binary
+*.woff2 binary
+*.png binary
