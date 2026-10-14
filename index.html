@@ -1,10 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="it">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="dark light">
 <title>TeX</title>
+<link rel="preload" href="iosevka-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="iosevka-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,95 +15,134 @@
 <meta name="apple-mobile-web-app-title" content="TeX">
 <link rel="stylesheet" href="katex.min.css">
 <link rel="stylesheet" href="styles.css">
+<script>
+  // Apply the saved theme before anything is drawn.
+  try { var t = localStorage.getItem('texpad-theme'); if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 </head>
 <body>
 <div id="app" data-view="editor">
   <header id="bar">
-    <button id="btn-files" class="icon-btn" aria-label="Documents">
+    <button id="btn-files" class="icon-btn" aria-label="Documenti" title="Documenti">
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    </button>
+    <button id="btn-side" class="icon-btn" aria-label="Struttura e formule" title="Struttura e formule" aria-pressed="false">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 3.8v12.4" stroke="currentColor" stroke-width="1.6"/><path d="M4.6 7h1.6M4.6 10h1.6M4.6 13h1.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
     <div id="doc-title">
       <span id="project-name"></span>
-      <select id="file-select" aria-label="Open file" hidden></select>
+      <select id="file-select" aria-label="Apri file" hidden></select>
     </div>
-    <div id="view-switch" role="group" aria-label="Show">
-      <button data-view="editor" aria-pressed="true">Source</button>
+    <div id="view-switch" role="group" aria-label="Mostra">
+      <button data-view="editor" aria-pressed="true">Sorgente</button>
       <button data-view="pdf" aria-pressed="false">PDF</button>
     </div>
     <span class="spacer"></span>
-    <button id="btn-problems" data-kind="clean" aria-expanded="false"><span class="dot"></span><span class="label">No problems</span></button>
-    <button id="btn-compile" data-state="idle" title="Compile (⌘↩)"><span class="label">Compile</span></button>
+    <button id="btn-problems" data-kind="clean" aria-expanded="false"><span class="dot"></span><span class="label">Nessun problema</span></button>
+    <button id="btn-compile" data-state="idle" title="Compila (⌘↩)">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6.5 4.5v11l9-5.5z" fill="currentColor"/></svg>
+      <span class="label">Compila</span>
+    </button>
     <div class="menu-wrap">
-      <button id="btn-more" class="icon-btn" aria-label="More">
+      <button id="btn-more" class="icon-btn" aria-label="Altro" title="Altro">
         <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="4.5" cy="10" r="1.6" fill="currentColor"/><circle cx="10" cy="10" r="1.6" fill="currentColor"/><circle cx="15.5" cy="10" r="1.6" fill="currentColor"/></svg>
       </button>
       <div id="menu" role="menu">
-        <button data-act="export-pdf" role="menuitem">Save PDF…</button>
-        <button data-act="export-tex" role="menuitem">Export this file…</button>
-        <button data-act="new-file" role="menuitem">New file in this document…</button>
-        <button data-act="import" role="menuitem">Add images or files…</button>
-        <button data-act="show-log" role="menuitem">Show compile log</button>
+        <button data-act="export-pdf" role="menuitem">Salva PDF…</button>
+        <button data-act="export-tex" role="menuitem">Esporta questo file…</button>
+        <button data-act="new-file" role="menuitem">Nuovo file nel documento…</button>
+        <button data-act="import" role="menuitem">Aggiungi immagini o file…</button>
+        <button data-act="show-log" role="menuitem">Mostra il log di compilazione</button>
         <hr>
-        <label data-act="opt-auto"><input type="checkbox" id="opt-auto"> Compile as I type</label>
-        <label data-act="opt-follow"><input type="checkbox" id="opt-follow"> PDF follows the cursor</label>
-        <label data-act="opt-preview"><input type="checkbox" id="opt-preview"> Preview math under the cursor</label>
+        <div class="menu-label">Tema</div>
+        <div class="theme-switch" role="group" aria-label="Tema">
+          <button data-theme-choice="auto">Automatico</button>
+          <button data-theme-choice="dark">Lavagna</button>
+          <button data-theme-choice="light">Carta</button>
+        </div>
+        <div class="menu-label">Dimensione del testo</div>
+        <div class="theme-switch" role="group" aria-label="Dimensione del testo">
+          <button data-font-step="-1" aria-label="Più piccolo">A−</button>
+          <span id="font-size-label">15</span>
+          <button data-font-step="1" aria-label="Più grande">A+</button>
+        </div>
+        <hr>
+        <label data-act="opt-auto"><input type="checkbox" id="opt-auto"> Compila mentre scrivo</label>
+        <label data-act="opt-follow"><input type="checkbox" id="opt-follow"> Il PDF segue il cursore</label>
+        <label data-act="opt-preview"><input type="checkbox" id="opt-preview"> Anteprima delle formule</label>
+        <label data-act="opt-wrap"><input type="checkbox" id="opt-wrap"> A capo automatico</label>
       </div>
     </div>
   </header>
 
   <main id="split">
-    <section id="editor-pane" aria-label="Source">
+    <aside id="side" aria-label="Struttura e formule">
+      <div class="side-tabs" role="tablist">
+        <button role="tab" data-tab="outline" aria-selected="true">Struttura</button>
+        <button role="tab" data-tab="equations" aria-selected="false">Formule</button>
+      </div>
+      <div class="side-body">
+        <ol id="outline" class="side-list" data-tab-panel="outline"></ol>
+        <ol id="equations" class="side-list" data-tab-panel="equations" hidden></ol>
+      </div>
+    </aside>
+    <section id="editor-pane" aria-label="Sorgente">
       <div id="editor"></div>
-      <div id="math-preview" hidden><div class="math"></div></div>
-      <div id="keyrow" aria-label="LaTeX keys"></div>
+      <div id="formula" hidden aria-live="polite">
+        <div class="math"></div>
+      </div>
     </section>
-    <div id="divider" role="separator" aria-orientation="vertical" aria-label="Resize"></div>
+    <div id="divider" role="separator" aria-orientation="vertical" aria-label="Ridimensiona"></div>
     <section id="pdf-pane" aria-label="PDF">
       <div id="pdf"></div>
-      <p id="pdf-empty">Loading the TeX engine…</p>
+      <p id="pdf-empty">Caricamento del motore TeX…</p>
       <div id="pdf-tools">
         <span id="page-info"></span>
-        <button id="zoom-out" class="icon-btn" aria-label="Zoom out"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-        <button id="zoom-fit" class="text-btn">Fit</button>
-        <button id="zoom-in" class="icon-btn" aria-label="Zoom in"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10M10 5v10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+        <button id="zoom-out" class="icon-btn" aria-label="Riduci"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+        <button id="zoom-fit" class="text-btn">Adatta</button>
+        <button id="zoom-in" class="icon-btn" aria-label="Ingrandisci"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10h10M10 5v10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
       </div>
     </section>
   </main>
 
-  <section id="problems" aria-label="Problems">
+  <div id="keybar" aria-label="Tasti LaTeX"></div>
+
+  <section id="problems" aria-label="Problemi">
     <header>
-      <h2>Problems</h2>
+      <h2>Problemi</h2>
       <button id="log-toggle" class="text-btn">Log</button>
-      <button id="problems-close" class="icon-btn" aria-label="Close"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+      <button id="problems-close" class="icon-btn" aria-label="Chiudi"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
     </header>
     <ul id="problem-list"></ul>
     <pre id="log"></pre>
   </section>
 
+  <div id="popover" hidden></div>
+
   <div id="scrim"></div>
-  <aside id="drawer" aria-label="Documents">
+  <aside id="drawer" aria-label="Documenti">
     <header>
-      <h2>Documents</h2>
-      <button id="drawer-close" class="icon-btn" aria-label="Close"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+      <h2>Documenti</h2>
+      <button id="drawer-close" class="icon-btn" aria-label="Chiudi"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
     </header>
     <div class="new-row">
-      <button class="btn" data-new="notes">New notes</button>
-      <button class="btn" data-new="slides">New slides</button>
-      <button class="btn quiet" data-new="blank">Blank</button>
+      <button class="btn" data-new="notes">Nuove note</button>
+      <button class="btn" data-new="slides">Nuove slide</button>
+      <button class="btn quiet" data-new="blank">Vuoto</button>
     </div>
     <ul id="project-list"></ul>
-    <h3>Files in <span id="drawer-project"></span></h3>
+    <h3>File in <span id="drawer-project"></span></h3>
     <ul id="file-list"></ul>
     <div class="new-row">
-      <button class="btn quiet" id="add-file">New file</button>
-      <button class="btn quiet" id="import-btn">Add images or files</button>
+      <button class="btn quiet" id="add-file">Nuovo file</button>
+      <button class="btn quiet" id="import-btn">Aggiungi immagini o file</button>
     </div>
     <input type="file" id="import-input" multiple hidden accept=".tex,.bib,.sty,.cls,.png,.jpg,.jpeg,.pdf,image/png,image/jpeg,application/pdf">
   </aside>
 
   <div id="boot" role="status">
     <div class="boot-card">
-      <p id="boot-label">Loading the TeX engine</p>
+      <p id="boot-label">Caricamento del motore TeX</p>
       <div class="boot-track"><div id="boot-bar"></div></div>
     </div>
   </div>
