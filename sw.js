@@ -1,5 +1,5 @@
 // Offline support: every file of the editor is served from the cache once it has been fetched.
-const CACHE = 'texpad-80be96b519c2';
+const CACHE = 'texpad-6859d329360b';
 const CORE = ["KaTeX_AMS-Regular.woff2", "KaTeX_Caligraphic-Bold.woff2", "KaTeX_Caligraphic-Regular.woff2", "KaTeX_Fraktur-Bold.woff2", "KaTeX_Fraktur-Regular.woff2", "KaTeX_Main-Bold.woff2", "KaTeX_Main-BoldItalic.woff2", "KaTeX_Main-Italic.woff2", "KaTeX_Main-Regular.woff2", "KaTeX_Math-BoldItalic.woff2", "KaTeX_Math-Italic.woff2", "KaTeX_SansSerif-Bold.woff2", "KaTeX_SansSerif-Italic.woff2", "KaTeX_SansSerif-Regular.woff2", "KaTeX_Script-Regular.woff2", "KaTeX_Size1-Regular.woff2", "KaTeX_Size2-Regular.woff2", "KaTeX_Size3-Regular.woff2", "KaTeX_Size4-Regular.woff2", "KaTeX_Typewriter-Regular.woff2", "app.js", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "index.html", "iosevka-latin-400-italic.woff2", "iosevka-latin-400-normal.woff2", "iosevka-latin-700-normal.woff2", "katex.min.css", "manifest.webmanifest", "offline-files.json", "pdf.min.js", "pdf.worker.min.js", "styles.css", "swiftlatexpdftex.js", "texlive-parts.json", "texlive.json"];
 
 self.addEventListener('install', (e) => {
