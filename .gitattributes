@@ -6,3 +6,4 @@ texlive.bin.* binary
 *.wasm binary
 *.woff2 binary
 *.png binary
+*.bin binary

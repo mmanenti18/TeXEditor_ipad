@@ -52,9 +52,12 @@
       </button>
       <div id="menu" role="menu">
         <button data-act="export-pdf" role="menuitem">Salva PDF…</button>
-        <button data-act="export-tex" role="menuitem">Esporta questo file…</button>
+        <button data-act="export-zip" role="menuitem">Esporta il documento (.zip)…</button>
+        <button data-act="export-tex" role="menuitem">Esporta solo questo file…</button>
         <button data-act="new-file" role="menuitem">Nuovo file nel documento…</button>
-        <button data-act="import" role="menuitem">Aggiungi immagini o file…</button>
+        <button data-act="new-bib" role="menuitem">Nuova bibliografia (.bib)…</button>
+        <button data-act="insert-image" role="menuitem">Inserisci immagine…</button>
+        <button data-act="import" role="menuitem">Aggiungi file al documento…</button>
         <button data-act="show-log" role="menuitem">Mostra il log di compilazione</button>
         <hr>
         <div class="menu-label">Tema</div>
@@ -143,9 +146,11 @@
     <ul id="file-list"></ul>
     <div class="new-row">
       <button class="btn quiet" id="add-file">Nuovo file</button>
+      <button class="btn quiet" id="add-bib">Nuova bibliografia</button>
       <button class="btn quiet" id="import-btn">Aggiungi immagini o file</button>
     </div>
-    <input type="file" id="import-input" multiple hidden accept=".tex,.bib,.sty,.cls,.png,.jpg,.jpeg,.pdf,image/png,image/jpeg,application/pdf">
+    <input type="file" id="import-input" multiple hidden accept=".tex,.bib,.sty,.cls,.bst,image/*,application/pdf">
+    <input type="file" id="image-input" multiple hidden accept="image/*,application/pdf">
   </aside>
 
   <div id="boot" role="status">
