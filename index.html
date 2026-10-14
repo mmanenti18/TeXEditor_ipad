@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="color-scheme" content="dark light">
 <title>TeX</title>
-<link rel="preload" href="iosevka-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="iosevka-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="cascadia-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="cascadia-mono-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,7 +17,10 @@
 <link rel="stylesheet" href="styles.css">
 <script>
   // Apply the saved theme before anything is drawn.
-  try { var t = localStorage.getItem('texpad-theme'); if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t; } catch (e) {}
+  try {
+    var t = localStorage.getItem('texpad-theme'); if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+    var f = localStorage.getItem('texpad-code-font'); if (f === 'iosevka') document.documentElement.dataset.codeFont = f;
+  } catch (e) {}
 </script>
 </head>
 <body>
@@ -59,6 +62,11 @@
           <button data-theme-choice="auto">Automatico</button>
           <button data-theme-choice="dark">Lavagna</button>
           <button data-theme-choice="light">Carta</button>
+        </div>
+        <div class="menu-label">Carattere del codice</div>
+        <div class="theme-switch" role="group" aria-label="Carattere del codice">
+          <button data-code-font-choice="cascadia" style="font-family: 'Cascadia Mono', monospace">Cascadia</button>
+          <button data-code-font-choice="iosevka" style="font-family: 'Iosevka', monospace">Iosevka</button>
         </div>
         <div class="menu-label">Dimensione del testo</div>
         <div class="theme-switch" role="group" aria-label="Dimensione del testo">
