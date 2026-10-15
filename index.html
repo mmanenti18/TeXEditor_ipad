@@ -61,6 +61,13 @@
         <button data-act="import" role="menuitem">Aggiungi file al documento…</button>
         <button data-act="show-log" role="menuitem">Mostra il log di compilazione</button>
         <hr>
+        <div class="menu-label">Compilatore di questo documento</div>
+        <div class="theme-switch" role="group" aria-label="Compilatore">
+          <button data-engine-choice="auto">Automatico</button>
+          <button data-engine-choice="pdflatex">pdfLaTeX</button>
+          <button data-engine-choice="lualatex">LuaLaTeX</button>
+        </div>
+        <p id="engine-note" class="menu-note"></p>
         <div class="menu-label">Tema</div>
         <div class="theme-switch" role="group" aria-label="Tema">
           <button data-theme-choice="auto">Automatico</button>
