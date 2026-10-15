@@ -29,7 +29,7 @@
     <button id="btn-files" class="icon-btn" aria-label="Documenti" title="Documenti">
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
     </button>
-    <button id="btn-side" class="icon-btn" aria-label="Struttura e formule" title="Struttura e formule" aria-pressed="false">
+    <button id="btn-side" class="icon-btn" aria-label="Struttura, formule e file" title="Struttura, formule e file" aria-pressed="false">
       <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 3.8v12.4" stroke="currentColor" stroke-width="1.6"/><path d="M4.6 7h1.6M4.6 10h1.6M4.6 13h1.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
     <div id="doc-title">
@@ -57,6 +57,7 @@
         <button data-act="new-file" role="menuitem">Nuovo file nel documento…</button>
         <button data-act="new-bib" role="menuitem">Nuova bibliografia (.bib)…</button>
         <button data-act="insert-image" role="menuitem">Inserisci immagine…</button>
+        <button data-act="open-doc" role="menuitem">Apri un documento (.tex o .zip)…</button>
         <button data-act="import" role="menuitem">Aggiungi file al documento…</button>
         <button data-act="show-log" role="menuitem">Mostra il log di compilazione</button>
         <hr>
@@ -87,14 +88,25 @@
   </header>
 
   <main id="split">
-    <aside id="side" aria-label="Struttura e formule">
+    <aside id="side" aria-label="Struttura, formule e file">
       <div class="side-tabs" role="tablist">
         <button role="tab" data-tab="outline" aria-selected="true">Struttura</button>
         <button role="tab" data-tab="equations" aria-selected="false">Formule</button>
+        <button role="tab" data-tab="files" aria-selected="false">File</button>
       </div>
       <div class="side-body">
         <ol id="outline" class="side-list" data-tab-panel="outline"></ol>
         <ol id="equations" class="side-list" data-tab-panel="equations" hidden></ol>
+        <div id="files-panel" data-tab-panel="files" hidden>
+          <div class="files-head"><span id="files-title"></span><span id="files-count"></span></div>
+          <div class="files-actions">
+            <button class="btn small quiet" data-fa="file">+ File</button>
+            <button class="btn small quiet" data-fa="folder">+ Cartella</button>
+            <button class="btn small quiet" data-fa="import">Aggiungi…</button>
+          </div>
+          <ul id="file-tree" class="side-list"></ul>
+          <p id="files-hint" class="files-hint"></p>
+        </div>
       </div>
     </aside>
     <section id="editor-pane" aria-label="Sorgente">
@@ -140,6 +152,7 @@
       <button class="btn" data-new="notes">Nuove note</button>
       <button class="btn" data-new="slides">Nuove slide</button>
       <button class="btn quiet" data-new="blank">Vuoto</button>
+      <button class="btn primary" id="open-btn">Apri .tex o .zip…</button>
     </div>
     <ul id="project-list"></ul>
     <h3>File in <span id="drawer-project"></span></h3>
@@ -149,7 +162,8 @@
       <button class="btn quiet" id="add-bib">Nuova bibliografia</button>
       <button class="btn quiet" id="import-btn">Aggiungi immagini o file</button>
     </div>
-    <input type="file" id="import-input" multiple hidden accept=".tex,.bib,.sty,.cls,.bst,image/*,application/pdf">
+    <input type="file" id="import-input" multiple hidden>
+    <input type="file" id="open-input" multiple hidden>
     <input type="file" id="image-input" multiple hidden accept="image/*,application/pdf">
   </aside>
 
