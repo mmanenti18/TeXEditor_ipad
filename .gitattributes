@@ -8,3 +8,4 @@ texlive.bin.* binary
 *.png binary
 *.bin binary
 texlive-lua.bin.* binary
+texlive-pdftex.bin.* binary
